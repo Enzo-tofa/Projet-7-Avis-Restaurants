@@ -1,0 +1,33 @@
+<div class="container">
+
+  <h1>{{ title }}</h1>
+
+</div>
+
+<div class="container-fluid" style="display: flex;">
+
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (boundsChange)="checkMarkersInBounds($event)">
+
+    <agm-marker *ngIf="geo==true" [latitude]="lat" [longitude]="lng"></agm-marker>
+
+    <agm-marker [iconUrl] ="m.title === selectedRestaurant ? 'https://www.guenats.com/wp-content/uploads/2021/09/iconnonselectionner.png' : 'https://www.guenats.com/wp-content/uploads/2021/09/icon-selectionnee.png'" *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.title!, i)" [latitude]="m.lat"
+      [longitude]="m.lng" [title]="m.title!" [markerDraggable]="m.draggable" (dragEnd)="markerDragEnd(m, $event)" (click)="selection(m.title)">
+      <agm-info-window>
+        <strong>{{m.title}}</strong> <br> {{m.adresse}} <br> {{m.cp}} <br> {{m.pays}}
+      </agm-info-window>
+    </agm-marker>
+  </agm-map>
+
+  <ol>
+
+    <li *ngFor="let f of filteredRestaurant" (click)="selection(f.title)"> {{f.title}} <br> {{f.adresse}} <br> {{f.cp}} <br>{{f.pays}} <br> {{f.average}} / 5 étoiles 
+
+      <ol *ngIf="f.title===selectedRestaurant">
+        <li *ngFor="let r of f.ratings">
+          <div> {{r.stars}} <br> {{r.comment}}</div>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+</div>

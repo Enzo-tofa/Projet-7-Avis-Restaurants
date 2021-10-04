@@ -1,0 +1,14 @@
+agm-map {
+    height: 600px;
+    flex: 3;
+  }
+
+ol{
+  list-style-type: none;
+  flex: 1;
+  }
+
+li{
+  border: 2px black solid;
+  background-color: rgb(218, 218, 218);
+}
