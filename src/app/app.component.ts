@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { MouseEvent } from '@agm/core';
+import { Component, OnInit,Inject } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import  *  as  data  from  './data.json';
+import { GoogleApiService } from './service/google-api.service';
+
+
+
 
 @Component({
   selector: 'app-root',
@@ -13,65 +18,16 @@ export class AppComponent implements OnInit {
   selectedRestaurant!: string;
   zoom!: number;
   geo!: boolean;
+  minimalvalue =0;
+  maximalvalue =6;
   filteredRestaurant!: marker[];
-  average!:number[];
-
   ratings!: rating[];
-  markers: marker[] = [
-    {
-      'lat': 43.40239666579384, 'lng': 5.055950264090761, 'title': 'Guénats', 'adresse': '8 cours du 4 septembre', 'cp': '13500 Martigues', 'pays': 'France', draggable: false,
-      ratings: [
-        {
-          "stars": 4,
-          "comment": "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
-        },
-        {
-          "stars": 5,
-          "comment": "Tout simplement mon restaurant préféré !"
-        }
-      ]
-    },
-    {
-      'lat': 43.40783539446187, 'lng': 5.056561229322723, 'title': 'Crush burger', 'adresse': '8 cours du 4 septembres', 'cp': '13500 Martigues', 'pays': 'France', draggable: false,
-      ratings: [
-        {
-          "stars": 4,
-          "comment": "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
-        },
-        {
-          "stars": 5,
-          "comment": "Tout simplement mon restaurant préféré !"
-        }
-      ]
-    },
-    {
-      'lat': 43.40834501420323, 'lng': 5.056354854297549, 'title': 'Snack la grillade', 'adresse': '5 Rue de Verdun', 'cp': '13500 Martigues', 'pays': 'France', draggable: false,
-      ratings: [
-        {
-          "stars": 1,
-          "comment": "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
-        },
-        {
-          "stars": 2,
-          "comment": "Tout simplement mon restaurant préféré !"
-        }
-      ]
-    },
-    {
-      'lat': 43.40282102324742, 'lng': 5.057338488304942, 'title': 'La grange', 'adresse': '50 Quai Général Leclerc', 'cp': '13500 Martigues', 'pays': 'France', draggable: false,
-      ratings: [
-        {
-          "stars": 5,
-          "comment": "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer le fromage."
-        },
-        {
-          "stars": 5,
-          "comment": "Tout simplement mon restaurant préféré pour la fondue!"
-        }
-      ]
-    }
-  ];
+  markers: marker[] = (data as any).default;
 
+
+  constructor(private googleApiService : GoogleApiService){
+    this.googleApiService.getNearby(this.lat,this.lng).subscribe(d => {console.log(JSON.stringify(d));console.log(d)});
+  }
 
 
 
@@ -80,59 +36,59 @@ export class AppComponent implements OnInit {
     this.getAverage();
   }
 
+  onSubmit(e: NgForm, rating : rating[]) {
+    rating.push(e.value);
+    this.getAverage();
 
-
+  }
 
   getAverage() {
 
-   this.markers.map(marker => {
-      let somme = 0;
-      let i = 0;
-      let moyenne = 0;
-     marker.ratings.map(rating => {
+    this.markers.map(marker => {
+      marker.ratings.map(rating => {
+        const somme = marker.ratings.reduce((accumulateur, valeurCourante) => {
+          return accumulateur + valeurCourante.stars;
+        }, 0);
+        marker.average = somme / marker.ratings.length;
+      }
+      )
     })
-    }
-    )
   }
 
 
-
-    checkMarkersInBounds(bounds: any) {
-
-      this.filteredRestaurant = [];
-      for (let m of this.markers) {
-
-        let coordRestaurant = { lat: m.lat, lng: m.lng };
-
-        if (bounds.contains(coordRestaurant)) {
-
-          this.filteredRestaurant.push({ lat: m.lat, lng: m.lng, title: m.title, adresse: m.adresse, cp: m.cp, pays: m.pays, draggable: m.draggable, average: m.average, ratings: m.ratings });
-          console.log(this.filteredRestaurant);
-        }
+  checkMarkersInAverage(minimalvalue: any, maximalvalue: any) {
+    this.filteredRestaurant = [];
+    for (let m of this.markers) {
+      if (+this.maximalvalue >= m.average && +this.minimalvalue <= m.average) {
+        this.filteredRestaurant.push(m);
       }
-    }
+    };
+  }
 
-    clickedMarker(title: string, index: number) {
-      console.log(`clicked the marker: ${title || index}`)
-    }
 
-    selection(title: any) {
-      console.log(title);
-      this.selectedRestaurant = title;
-    }
-    /*mapClicked($event: MouseEvent) {
-      this.markers.push({
-        lat: $event.coords.lat,
-        lng: $event.coords.lng,
-        draggable: false,
-      });
-  
-      (mapClick)="mapClicked($event)"
-    }*/
+  getSrcByRestaurant(markers: marker) {
+    return `https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${markers.lat},${markers.lng}&fov=80&heading=70&pitch=0&key=AIzaSyDMx0HGF6b43UjMAsUZ_56r9uQTZUtJY4k`
+  }
 
-    markerDragEnd(m: marker, $event: MouseEvent) {
-      console.log('dragEnd', m, $event);
-    }
+  checkMarkersInBounds(bounds: any) {
+    this.filteredRestaurant = [];
+    for (let m of this.markers) {
+      let coordRestaurant = { lat: m.lat, lng: m.lng };
+      if (bounds.contains(coordRestaurant) && +this.maximalvalue >= m.average && +this.minimalvalue <= m.average) {
+        this.filteredRestaurant.push(m);
+      }
+    };
+    this.googleApiService.getNearby(this.lat,this.lng).subscribe(d => {console.log(JSON.stringify(d));console.log(this.lat)});
+  }
+
+  clickedMarker(title: string, index: number) {
+    console.log(`clicked the marker: ${title || index}`)
+  }
+
+  selection(title: any) {
+    this.selectedRestaurant = title;
+  }
+
 
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
@@ -150,19 +106,22 @@ export class AppComponent implements OnInit {
     }
   }
 }
+
 interface marker {
   lat: number;
   lng: number;
-  average?: number;
+  average: number;
   title?: string;
-  draggable: boolean;
   adresse?: string;
   cp?: string;
   pays?: string;
   ratings: rating[];
+  avis: boolean;
 }
 
 interface rating {
   stars: number;
   comment?: string;
 }
+
+

@@ -1,0 +1,117 @@
+[
+    {
+      "lat": 43.40239666579384, "lng": 5.055950264090761, "title": "Guénats", "adresse": "8 cours du 4 septembre", "cp": "13500 Martigues" ,"pays": "France", " average": 0,
+      "ratings": [
+        {
+          "stars": 4,
+          "comment": "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
+        },
+        {
+          "stars": 5,
+          "comment": "Tout simplement mon restaurant préféré !"
+        }
+      ]
+    },
+    {
+      "lat": 43.40783539446187, "lng": 5.056561229322723, "title": "Crush burger", "adresse": "8 cours du 4 septembres", "cp": "13500 Martigues" ,"pays": "France",  "average": 0,
+      "ratings": [
+        {
+          "stars": 4,
+          "comment": "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
+        },
+        {
+          "stars": 5,
+          "comment": "Tout simplement mon restaurant préféré !"
+        }
+      ]
+    },
+    {
+      "lat": 43.40834501420323, "lng": 5.056354854297549, "title": "Snack la grillade", "adresse": "5 Rue de Verdun", "cp": "13500 Martigues" ,"pays": "France",  "average": 0,
+      "ratings": [
+        {
+          "stars": 1,
+          "comment": "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
+        },
+        {
+          "stars": 2,
+          "comment": "Tout simplement mon restaurant préféré !"
+        }
+      ]
+    },
+    {
+      "lat": 43.40282102324742, "lng": 5.057338488304942, "title": "La grange", "adresse": "50 Quai Général Leclerc", "cp": "13500 Martigues" ,"pays": "France", "average": 0,
+      "ratings": [
+        {
+          "stars": 5,
+          "comment": "Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer le fromage."
+        },
+        {
+          "stars": 5,
+          "comment": "Tout simplement mon restaurant préféré pour la fondue!"
+        }
+      ]
+    },{
+      "lat": 43.405618491310285, "lng": 5.052147244596914, "title": "Lauthentique", "adresse": "19 Quai Lucien Toulmond", "cp": "13500 Martigues" ,"pays": "France",  "average": 0,
+      "ratings": [
+        {
+          "stars": 1,
+          "comment": "Le pire restaurant de ma vie."
+        },
+        {
+          "stars": 2,
+          "comment": "Correct mais le service était déplorable!"
+        },{
+          "stars": 1,
+          "comment": "Je préfere manger mes pieds que d'y aller."
+        },
+        {
+          "stars": 5,
+          "comment": "Tout simplement mon restaurant préféré pour la fondue!"
+        }
+      ]
+    },
+    {
+      "lat": 43.399464019142705, "lng": 5.052366905323786, "title": "Osaka sushi Martigues", "adresse": "14 Bd Jean Zay, 13500 Martigues", "cp": "13500 Martigues" ,"pays": "France",  "average": 0,
+      "ratings": [
+        {
+          "stars": 1,
+          "comment": "Première fois que je teste et très déçu, l'avocat était dure dans tous les california que nous avons pris. Ils ont oubliés des produits. Ça n'était pas spécialement bon non plus. Pas bon rapport qualité/prix selon moi. Au vu des photos cela donnait envie, comme quoi la première impression n'est pas toujours bonne"
+        },
+        {
+          "stars": 5,
+          "comment": "Un régale !!!! Les produits sont frais !!!! Nous commandons souvent et honnêtement c'est le meilleur restaurant de la commune de Martigues , fraîcheur et qualité des produits au rendez vous. Je commande souvent pour mon équipe et nous n'avons jamais était déçu de leur prestation. Ne changez rien vous êtes au top. Merci à vous pour votre professionnalisme, A très vite !!"
+        }
+      ]
+    },
+    {
+      "lat": 43.42178734311714, "lng": 5.054409517628487 , "title": "Macdonalds", "adresse": "Boulevard Paul Eluard Centre Commercial Auchan - ZAC Canto Perdrix", "cp": "13500 Martigues" ,"pays": "France", "average": 0,
+      "ratings": [
+        {
+          "stars": 1,
+          "comment": "Erreur de commande sur 2 produits après 45 minutes d'attentes. Une fois a la maison je les appelle, on me propose de reprendre la voiture et revenir ou un dessert à ma prochaine commande. Honteux"
+        },
+        {
+          "stars": 1,
+          "comment": "40mn d'attente pour avoir une commande en restaurant faite par click and collect 🤬 des ingrédients manquant et comme d'habitude des sandwich froid ! Je ne remercie par MC Do martigues."
+        },
+        {
+          "stars": 1,
+          "comment": "Burger très sec. Pas de serviettes. Livre demandé à la commande et jouet reçu."
+        }
+      ]
+    },
+    {
+      "lat": 43.402175292612576,  "lng": 5.057094857042788, "title": "Les glace martégales", "adresse": "2 Av. Frédéric Mistral", "cp": "13500 Martigues" ,"pays": "France", "average": 0,
+      "ratings": [
+        {
+          "stars": 1,
+          "comment": "Au début de l'ouverture, je trouvais le concept sympa. Mais au fur et à mesure du temps, je trouve cela du style à laissé aller. Les crêpes sont banales et l'hygiène à revoir. Rarement les gants, pas de masque, et mon amie a surprit le patron à remettre le jambon dans le panini un fois tombé par terre. Il n'y a pas d'originalité sur les crêpes. Elles sont meilleur à flunch et mieux servi. De plus, se serai sympa, que le patron arrête de draguer les étudiante entre 15 et 17ans. Un jour, sa va lui coûter problème. Mais apparemment vu les autre commentaire, je ne suis pas la seul."
+        },
+        {
+          "stars": 1,
+          "comment": "Si j'avais pu mettre zéro étoile je l'aurai fait ! Nous sommes venu 3 fois ! 1fois c'était fermé alors que nous avions regardé les horaires avant de nous déplacer de châteauneuf, la 2eme fois la dame nous a dit qu'elle ne faisait pas de crêpes le matin, donc à part un café nous avions eu le droit de passer notre chemin ! Et la 3ème fois ma petite cousine de 15ans s'est faites draguer par le patron de se  restaurant à fuir les non professionnels !!!!"
+        }
+      ]
+    }
+
+  ]
