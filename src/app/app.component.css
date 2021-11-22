@@ -1,3 +1,7 @@
+*{
+  overflow: hidden;
+}
+
 agm-map {
     height: 750px;
     flex: 3;
@@ -6,18 +10,19 @@ agm-map {
   }
 
  h1{
-
+margin: 50px;
    max-height: 200px;
  }
 
- .resto{
-   height: 200px;
- }
 ol{
   list-style-type: none;
   flex: 1;
   margin: 1px;
-  height: calc(80vh);
+  }
+
+#main{
+    height: 80vh;
+    overflow : scroll;
   }
 
 li{

@@ -19,7 +19,7 @@
       </agm-marker>
     </agm-map>
 
-    <ol>
+    <ol id="main">
       <mat-form-field appearance="fill">
         <mat-label>Note minimale</mat-label>
         <mat-select [(value)]="minimalvalue">
@@ -27,7 +27,7 @@
           <mat-option value="2" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">2</mat-option>
           <mat-option value="3" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">3</mat-option>
           <mat-option value="4" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">4</mat-option>
-          <mat-option value="5" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">5</mat-option>
+          <mat-option value="5" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">5</mat-option>          
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="fill">
@@ -38,20 +38,18 @@
           <mat-option value="3" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">3</mat-option>
           <mat-option value="4" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">4</mat-option>
           <mat-option value="5" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">5</mat-option>
-        </mat-select>
+        </mat-select> 
       </mat-form-field>
+      <button mat-stroked-button color="primary" (click)="resetfilter()">Réinitialiser le filtre</button>
 
       <li *ngFor="let f of filteredRestaurant" (click)="selection(f.title)"> {{f.title}} <br> {{f.adresse}} <br>
         {{f.cp}} <br>{{f.pays}} <br> {{f.average}} / 5 étoiles
         <ol *ngIf="f.title===selectedRestaurant">
           <img [src]="getSrcByRestaurant(f)">
-
-
           <li *ngFor="let r of f.ratings">
             <div> {{r.stars}} / 5 <br> {{r.comment}}</div>
           </li>
         </ol>
-
         <form #e="ngForm" *ngIf="f.title===selectedRestaurant" (ngSubmit)="onSubmit(e,f.ratings)" novalidate>
           <label for="stars">Note : </label>
           <input name="stars" type="number" placeholder="Comprise entre 0 et 5" max="5" min="0" class="form-control" ngModel required>

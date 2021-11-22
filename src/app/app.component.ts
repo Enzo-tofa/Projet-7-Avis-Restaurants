@@ -45,8 +45,12 @@ export class AppComponent implements OnInit {
 
   }
 
+  resetfilter(){
+    this.maximalvalue = 5;
+    this.minimalvalue = 1;
+    this.checkMarkersInAverage(1, 5);
+  }
   getAverage() {
-
     this.markers.map(marker => {
       marker.ratings.map(rating => {
         const somme = marker.ratings.reduce((accumulateur, valeurCourante) => {
