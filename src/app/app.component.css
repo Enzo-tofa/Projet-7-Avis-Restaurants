@@ -4,14 +4,20 @@ agm-map {
     margin-left: 30px;
     border: black solid 1px;
   }
+
  h1{
-   padding : 50px ;
+
+   max-height: 200px;
  }
 
+ .resto{
+   height: 200px;
+ }
 ol{
   list-style-type: none;
   flex: 1;
   margin: 1px;
+  height: calc(80vh);
   }
 
 li{

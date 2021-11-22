@@ -1,6 +1,9 @@
 import { Component, OnInit,Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import  *  as  data  from  './data.json';
+import { Marker } from './interfaces/marker.interface';
+import { Rating } from './interfaces/rating.interface';
+import { RootObject } from './interfaces/resultGoogle.interface';
 import { GoogleApiService } from './service/google-api.service';
 
 
@@ -20,13 +23,13 @@ export class AppComponent implements OnInit {
   geo!: boolean;
   minimalvalue =0;
   maximalvalue =6;
-  filteredRestaurant!: marker[];
-  ratings!: rating[];
-  markers: marker[] = (data as any).default;
+  filteredRestaurant!: Marker[];
+  ratings!: Rating[];
+  markers: Marker[] = (data as any).default;
 
 
   constructor(private googleApiService : GoogleApiService){
-    this.googleApiService.getNearby(this.lat,this.lng).subscribe(d => {console.log(JSON.stringify(d));console.log(d)});
+    this.googleApiService.getNearby(this.lat,this.lng).subscribe((d : RootObject )=> {console.log(d.results);console.log(d)});
   }
 
 
@@ -36,7 +39,7 @@ export class AppComponent implements OnInit {
     this.getAverage();
   }
 
-  onSubmit(e: NgForm, rating : rating[]) {
+  onSubmit(e: NgForm, rating : Rating[]) {
     rating.push(e.value);
     this.getAverage();
 
@@ -66,7 +69,7 @@ export class AppComponent implements OnInit {
   }
 
 
-  getSrcByRestaurant(markers: marker) {
+  getSrcByRestaurant(markers: Marker) {
     return `https://maps.googleapis.com/maps/api/streetview?size=400x400&location=${markers.lat},${markers.lng}&fov=80&heading=70&pitch=0&key=AIzaSyDMx0HGF6b43UjMAsUZ_56r9uQTZUtJY4k`
   }
 
@@ -78,7 +81,7 @@ export class AppComponent implements OnInit {
         this.filteredRestaurant.push(m);
       }
     };
-    this.googleApiService.getNearby(this.lat,this.lng).subscribe(d => {console.log(JSON.stringify(d));console.log(this.lat)});
+    this.googleApiService.getNearby(this.lat,this.lng).subscribe(d => {console.log(d.results);console.log(this.lat)});
   }
 
   clickedMarker(title: string, index: number) {
@@ -107,21 +110,16 @@ export class AppComponent implements OnInit {
   }
 }
 
-interface marker {
-  lat: number;
-  lng: number;
-  average: number;
-  title?: string;
-  adresse?: string;
-  cp?: string;
-  pays?: string;
-  ratings: rating[];
-  avis: boolean;
-}
 
-interface rating {
-  stars: number;
-  comment?: string;
-}
+
+
+
+
+
+
+
+
+
+
 
 

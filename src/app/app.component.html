@@ -1,9 +1,9 @@
 <body>
-  <div class="container">
-    <h1>{{ title }}</h1>
+  <div class="container" >
+    <h1> {{title}} </h1>
   </div>
 
-  <div class="container-fluid" style="display: flex;">
+  <div class="container-fluid" id="resto" style="display: flex;">
 
     <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (boundsChange)="checkMarkersInBounds($event)" >
 
