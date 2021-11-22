@@ -40,7 +40,7 @@
           <mat-option value="5" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">5</mat-option>
         </mat-select> 
       </mat-form-field>
-      <button mat-stroked-button color="primary" (click)="resetfilter()">Réinitialiser le filtre</button>
+      <button id="filter" mat-stroked-button color="primary" (click)="resetfilter()">Réinitialiser le filtre</button>
 
       <li *ngFor="let f of filteredRestaurant" (click)="selection(f.title)"> {{f.title}} <br> {{f.adresse}} <br>
         {{f.cp}} <br>{{f.pays}} <br> {{f.average}} / 5 étoiles
