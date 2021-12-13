@@ -9,5 +9,5 @@ export interface Marker {
     cp?: string;
     pays?: string;
     ratings: Rating[];
-    avis: boolean;
+    id?: string;
   }

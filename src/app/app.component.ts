@@ -27,7 +27,9 @@ export class AppComponent implements OnInit {
   filteredRestaurant!: Marker[];
   ratings!: Rating[];
   markers: Marker[] = (data as any).default;
+  googleRestau!: Marker[];
   googleApiRestaurant!: Result[];
+  detailApiRestaurant!: Result[];
 
 
   constructor(private googleApiService : GoogleApiService){
@@ -39,7 +41,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.setCurrentLocation();
     this.getAverage();
-    console.log(this.googleApiRestaurant);
   }
 
   onSubmit(e: NgForm, rating : Rating[]) {
@@ -73,6 +74,7 @@ export class AppComponent implements OnInit {
     for (let m of this.markers) {
       if (+this.maximalvalue >= m.average && +this.minimalvalue <= m.average) {
         this.filteredRestaurant.push(m);
+        console.log(m)
       }
     };
   }
@@ -84,20 +86,31 @@ export class AppComponent implements OnInit {
 
    /** Permet de vérifier que le marker est dans la limite de la carte google maps */
   checkMarkersInBounds(bounds: any) {
-    this.filteredRestaurant = [];
+    if(!this.filteredRestaurant){
+    this.filteredRestaurant = [];}
     for (let m of this.markers) {
       let coordRestaurant = { lat: m.lat, lng: m.lng };
       if (bounds.contains(coordRestaurant) && +this.maximalvalue >= m.average && +this.minimalvalue <= m.average) {
         this.filteredRestaurant.push(m);
       }
     };
-    this.googleApiService.getNearby(this.lat,this.lng).subscribe(d => {console.log(d.results);console.log(this.lat);
+    this.googleApiService.getNearby(this.lat,this.lng).subscribe(d => {
       this.googleApiRestaurant=d.results;
-      console.log(this.googleApiRestaurant);
-      })
+      this.googleApiRestaurant.map(result =>{
+        let googleRestau = 
+          {
+            "lat":result.geometry.location.lat, "lng": result.geometry.location.lng, "title": result.name, "adresse": result.vicinity, "cp": "13500 Martigues" ,"pays": "France", "average": Number(result.rating), "id": result.place_id,
+            "ratings": []
+          };
+          this.googleApiService.getPlaceId(googleRestau.id).subscribe(e =>{
+            this.detailApiRestaurant=e.results;
+            console.log(e)})
+        
+          this.filteredRestaurant.push(googleRestau);
+      });
     
     
-    }
+    });}
 
  /** Permet de choisir le restaurant selectionné */
   selection(title: any) {

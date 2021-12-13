@@ -11,7 +11,7 @@
 
       <agm-marker
         [iconUrl]="m.title === selectedRestaurant ? 'https://www.guenats.com/wp-content/uploads/2021/09/iconnonselectionner.png' : 'https://www.guenats.com/wp-content/uploads/2021/09/icon-selectionnee.png'"
-        *ngFor="let m of markers; let i = index" (markerClick)="selection(m.title)" [latitude]="m.lat"
+        *ngFor="let m of filteredRestaurant; let i = index" (markerClick)="selection(m.title)" [latitude]="m.lat"
         [longitude]="m.lng" [title]="m.title!" (click)="selection(m.title)">
         <agm-info-window>
           <strong>{{m.title}}</strong> <br> {{m.adresse}} <br> {{m.cp}} <br> {{m.pays}}
