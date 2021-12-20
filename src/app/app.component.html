@@ -1,67 +1,68 @@
+<app-header></app-header>
+
+<div class="container py-5">
+    <div class="text-white">
+        <button id="scroll" (click)="scroll(target)">Trouve ton resto !</button>
+    </div>
+</div>
+
 <body>
-  <div class="container" >
-    <h1> {{title}} </h1>
-  </div>
+    <div #target class="container-fluid" id="resto" style="display: flex;">
 
-  <div class="container-fluid" id="resto" style="display: flex;">
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (boundsChange)="checkMarkersInBounds($event)" (mapClick)="openDialog($event.coords.lat, $event.coords.lng)">
 
-    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (boundsChange)="checkMarkersInBounds($event)" >
+            <agm-marker *ngIf="geo==true" [latitude]="lat" [longitude]="lng"></agm-marker>
 
-      <agm-marker *ngIf="geo==true" [latitude]="lat" [longitude]="lng"></agm-marker>
+            <agm-marker [iconUrl]="m.title === selectedRestaurant ? 'https://www.guenats.com/wp-content/uploads/2021/09/iconnonselectionner.png' : 'https://www.guenats.com/wp-content/uploads/2021/09/icon-selectionnee.png'" *ngFor="let m of filteredRestaurant; let i = index"
+                (markerClick)="selection(m.title)" [latitude]="m.lat" [longitude]="m.lng" [title]="m.title!" (click)="selection(m.title)">
+                <agm-info-window>
+                    <strong>{{m.title}}</strong> <br> {{m.adresse}} <br> {{m.cp}} <br> {{m.pays}}
+                </agm-info-window>
+            </agm-marker>
+        </agm-map>
 
-      <agm-marker
-        [iconUrl]="m.title === selectedRestaurant ? 'https://www.guenats.com/wp-content/uploads/2021/09/iconnonselectionner.png' : 'https://www.guenats.com/wp-content/uploads/2021/09/icon-selectionnee.png'"
-        *ngFor="let m of filteredRestaurant; let i = index" (markerClick)="selection(m.title)" [latitude]="m.lat"
-        [longitude]="m.lng" [title]="m.title!" (click)="selection(m.title)">
-        <agm-info-window>
-          <strong>{{m.title}}</strong> <br> {{m.adresse}} <br> {{m.cp}} <br> {{m.pays}}
-        </agm-info-window>
-      </agm-marker>
-    </agm-map>
+        <ol id="main">
+            <mat-form-field appearance="fill">
+                <mat-label>Note minimale</mat-label>
+                <mat-select [(value)]="minimalvalue">
+                    <mat-option value="1" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">1</mat-option>
+                    <mat-option value="2" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">2</mat-option>
+                    <mat-option value="3" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">3</mat-option>
+                    <mat-option value="4" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">4</mat-option>
+                    <mat-option value="5" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">5</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Note maximale</mat-label>
+                <mat-select [(value)]="maximalvalue">
+                    <mat-option value="1" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">1</mat-option>
+                    <mat-option value="2" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">2</mat-option>
+                    <mat-option value="3" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">3</mat-option>
+                    <mat-option value="4" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">4</mat-option>
+                    <mat-option value="5" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">5</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button id="filter" mat-stroked-button color="primary" (click)="resetfilter()">Réinitialiser le filtre</button>
 
-    <ol id="main">
-      <mat-form-field appearance="fill">
-        <mat-label>Note minimale</mat-label>
-        <mat-select [(value)]="minimalvalue">
-          <mat-option value="1" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">1</mat-option>
-          <mat-option value="2" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">2</mat-option>
-          <mat-option value="3" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">3</mat-option>
-          <mat-option value="4" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">4</mat-option>
-          <mat-option value="5" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">5</mat-option>          
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Note maximale</mat-label>
-        <mat-select [(value)]="maximalvalue">
-          <mat-option value="1" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">1</mat-option>
-          <mat-option value="2" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">2</mat-option>
-          <mat-option value="3" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">3</mat-option>
-          <mat-option value="4" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">4</mat-option>
-          <mat-option value="5" (click)="checkMarkersInAverage(minimalvalue,maximalvalue)">5</mat-option>
-        </mat-select> 
-      </mat-form-field>
-      <button id="filter" mat-stroked-button color="primary" (click)="resetfilter()">Réinitialiser le filtre</button>
-
-      <li *ngFor="let f of filteredRestaurant" (click)="selection(f.title)"> {{f.title}} <br> {{f.adresse}} <br>
-        {{f.cp}} <br>{{f.pays}} <br> {{f.average}} / 5 étoiles
-        <ol *ngIf="f.title===selectedRestaurant">
-          <img [src]="getSrcByRestaurant(f)">
-          <li *ngFor="let r of f.ratings">
-            <div> {{r.stars}} / 5 <br> {{r.comment}}</div>
-          </li>
+            <li *ngFor="let f of filteredRestaurant" (click)="selection(f.title)"> {{f.title}} <br> {{f.adresse}} <br> {{f.cp}} <br>{{f.pays}} <br> {{f.average}} / 5 étoiles
+                <ol *ngIf="f.title===selectedRestaurant">
+                    <img [src]="getSrcByRestaurant(f)">
+                    <li *ngFor="let r of f.ratings">
+                        <div> {{r.stars}} / 5 <br> {{r.comment}}</div>
+                    </li>
+                </ol>
+                <form #e="ngForm" *ngIf="f.title===selectedRestaurant" (ngSubmit)="onSubmit(e,f.ratings)" novalidate>
+                    <label for="stars">Note : </label>
+                    <input name="stars" type="number" placeholder="Comprise entre 0 et 5" max="5" min="0" class="form-control" ngModel required>
+                    <span class="validity"></span>
+                    <label for="comment">Commentaire : </label>
+                    <input name="comment" type="text" class="form-control" ngModel required #first="ngModel">
+                    <span class="validity"></span>
+                    <button color="accent">Donner votre avis</button>
+                </form>
+            </li>
         </ol>
-        <form #e="ngForm" *ngIf="f.title===selectedRestaurant" (ngSubmit)="onSubmit(e,f.ratings)" novalidate>
-          <label for="stars">Note : </label>
-          <input name="stars" type="number" placeholder="Comprise entre 0 et 5" max="5" min="0" class="form-control" ngModel required>
-          <span class="validity"></span>
-          <label for="comment">Commentaire : </label>
-          <input name="comment" type="text" class="form-control" ngModel required #first="ngModel">
-          <span class="validity"></span>
-          <button color="accent">Donner votre avis</button>
-        </form>
-      </li>
-    </ol>
 
-  </div>
+    </div>
 
 </body>

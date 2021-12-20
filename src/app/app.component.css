@@ -1,5 +1,5 @@
-*{
-  overflow: hidden;
+* {
+    overflow: hidden;
 }
 
 agm-map {
@@ -7,44 +7,51 @@ agm-map {
     flex: 3;
     margin-left: 30px;
     border: black solid 1px;
-  }
+}
 
- h1{
-margin: 50px;
-   max-height: 200px;
-   font-family: sans-serif;
- }
+body {
+    margin: 20px;
+}
 
-ol{
-  list-style-type: none;
-  flex: 1;
-  margin: 1px;
-  }
+h1 {
+    margin: 50px;
+    max-height: 200px;
+    font-family: sans-serif;
+}
 
-#main{
+ol {
+    list-style-type: none;
+    flex: 1;
+    margin: 1px;
+}
+
+#main {
     height: 80vh;
-    overflow : scroll;
-  }
-
-li{
-  border: 1px black solid;
-  margin: 1px;
-  background-color: rgb(218, 218, 218);
+    overflow: scroll;
 }
 
-#filter{
-  display: block;
-  margin-top: 0px;
+li {
+    border: 1px black solid;
+    margin: 1px;
+    background-color: rgb(218, 218, 218);
 }
 
-button{
-  width: 35%;
-  margin-left: calc(33%);
-  margin-top: 20px;
-  margin-bottom: 20px;
+#filter {
+    display: block;
+    margin-top: 0px;
+    width: 35%;
+    margin-left: calc(33%);
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-label{
-  margin-top: 10px;
-  margin-bottom: 10px;
+label {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#scroll {
+    position: absolute;
+    top: 38%;
+    left: 45%;
 }

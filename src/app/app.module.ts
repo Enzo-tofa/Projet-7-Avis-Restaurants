@@ -8,22 +8,26 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ModalComponent } from './modal/modal.component';
 import { HttpClientModule } from '@angular/common/http';
-
+import { HeaderComponent } from './header/header.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
     ModalComponent,
+    HeaderComponent,
   ],
   imports: [
     MatSelectModule,
     FormsModule,
     HttpClientModule,
     BrowserModule,
+    ReactiveFormsModule,
     MatDialogModule,
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyCz-BbR4i-iYhWPSfXirbmzy97vfYvwWpQ',libraries: ['places'] }, ),
     BrowserAnimationsModule,
+    NgbModule,
     
   ],bootstrap: [AppComponent]
 })
