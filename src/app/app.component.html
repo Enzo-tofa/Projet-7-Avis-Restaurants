@@ -9,7 +9,9 @@
 <body>
     <div #target class="container-fluid" id="resto" style="display: flex;">
 
-        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (boundsChange)="checkMarkersInBounds($event)" (mapClick)="openDialog($event.coords.lat, $event.coords.lng)">
+
+        <!-- (mapClick)="openDialog($event.coords.lat, $event.coords.lng)"-->
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (boundsChange)="checkMarkersInBounds($event)">
 
             <agm-marker *ngIf="geo==true" [latitude]="lat" [longitude]="lng"></agm-marker>
 

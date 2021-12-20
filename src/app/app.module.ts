@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
+    AppComponent,
     ModalComponent,
     HeaderComponent,
   ],

@@ -5,6 +5,7 @@ import { Marker } from './interfaces/marker.interface';
 import { Rating } from './interfaces/rating.interface';
 import { Result } from './interfaces/result.interface';
 import { RootObject } from './interfaces/resultGoogle.interface';
+import { ModalComponent } from './modal/modal.component';
 import { GoogleApiService } from './service/google-api.service';
 
 
@@ -33,7 +34,7 @@ export class AppComponent implements OnInit {
   detailApiRestaurant!: Result[];
 
   
-  constructor(private googleApiService: GoogleApiService, public dialog: MatDialog) {
+  constructor(private googleApiService: GoogleApiService) {
     this.googleApiService.getNearby(this.lat, this.lng).subscribe((d: RootObject) => {
     })
   }
@@ -45,18 +46,6 @@ export class AppComponent implements OnInit {
     }
   
 
-  openDialog(lat:number, lng: number){
-    const dialogRef = this.dialog.open(ModalComponent, {
-      width: '500px',
-      data: {lat: this.lat, lng: this.lng},      
-    });
-  
-    dialogRef.afterClosed().subscribe((result: any) => {
-      this.filteredRestaurant.push(result);
-      console.log(result);
-      this.lat = result;
-    });
-  }
 
   onSubmit(e: NgForm, rating: Rating[]) {
     rating.push(e.value);
