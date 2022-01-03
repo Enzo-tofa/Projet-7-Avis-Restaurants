@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormField, MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     HeaderComponent,
   ],
   imports: [
+    MatFormFieldModule,
     MatSelectModule,
+    MatInputModule,
     FormsModule,
     HttpClientModule,
     BrowserModule,

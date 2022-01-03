@@ -7,8 +7,12 @@ import { Result } from './interfaces/result.interface';
 import { RootObject } from './interfaces/resultGoogle.interface';
 import { ModalComponent } from './modal/modal.component';
 import { GoogleApiService } from './service/google-api.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { RestaurantService } from './service/restaurant.service';
+import { Results } from './interfaces/results.interface';
 
-
+export interface DialogData {
+}
 
 
 @Component({
@@ -25,27 +29,39 @@ export class AppComponent implements OnInit {
   geo!: boolean;
   minimalvalue = 0;
   maximalvalue = 6;
-  filteredRestaurant!: Marker[];
   hiddenRestaurant!: Marker[];
   ratings!: Rating[];
   markers: Marker[] = (data as any).default;
   googleRestau!: Marker[];
   googleApiRestaurant!: Result[];
-  detailApiRestaurant!: Result[];
+  detailApiRestaurant!: Results[];
 
-  
-  constructor(private googleApiService: GoogleApiService) {
+
+  constructor(private googleApiService: GoogleApiService, public dialog: MatDialog, public restaurantService: RestaurantService) {
     this.googleApiService.getNearby(this.lat, this.lng).subscribe((d: RootObject) => {
     })
   }
 
 
   ngOnInit() {
+    
     this.setCurrentLocation();
     this.getAverage();
-    }
-  
+  }
 
+
+  openDialog(lat: number, lng: number) {
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '500px',
+      data: { lat: lat, lng: lng },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.markers.push(result);
+      console.log(result);
+      this.lat = result;
+    });
+  }
 
   onSubmit(e: NgForm, rating: Rating[]) {
     rating.push(e.value);
@@ -53,7 +69,7 @@ export class AppComponent implements OnInit {
   }
 
   scroll(el: HTMLElement) {
-    el.scrollIntoView({behavior: 'smooth'});
+    el.scrollIntoView({ behavior: 'smooth' });
   }
 
 
@@ -79,14 +95,13 @@ export class AppComponent implements OnInit {
 
   /** Permet de vérifier que les restaurant selectionné correspondent au filtre de la note */
   checkMarkersInAverage(minimalvalue: any, maximalvalue: any) {
-    this.filteredRestaurant=[];
+    const filteredRestaurant: Marker[] = [];
     for (let h of this.hiddenRestaurant) {
       if (+this.maximalvalue >= h.average && +this.minimalvalue <= h.average) {
-        this.filteredRestaurant.push(h);
-        console.log(h)
+        filteredRestaurant.push(h);
       }
     };
-
+    this.restaurantService.setRestaurants(filteredRestaurant);
 
   }
 
@@ -100,21 +115,18 @@ export class AppComponent implements OnInit {
   /** Permet de vérifier que le marker est dans la limite de la carte google maps */
   checkMarkersInBounds(bounds: any) {
 
-    console.log(this.filteredRestaurant);
-    console.log(this.hiddenRestaurant);
-    this.filteredRestaurant = [];
+    const filteredRestaurant: Marker[] = [];
     this.hiddenRestaurant = [];
-    console.log(this.filteredRestaurant);
-    console.log(this.hiddenRestaurant);
 
     for (let m of this.markers) {
       let coordRestaurant = { lat: m.lat, lng: m.lng };
-      let present = this.filteredRestaurant.includes(m);
+      let present = filteredRestaurant.includes(m);
       if (bounds.contains(coordRestaurant) && +this.maximalvalue >= m.average && +this.minimalvalue <= m.average && !present) {
-        this.filteredRestaurant.push(m);
+        filteredRestaurant.push(m);
         this.hiddenRestaurant.push(m);
       }
     }
+    this.restaurantService.setRestaurants(filteredRestaurant);
 
 
     let center = Object.values(bounds);
@@ -123,32 +135,38 @@ export class AppComponent implements OnInit {
     let lngcenter = (latlngbounds[1].g + latlngbounds[1].h) / 2;
 
     this.googleApiService.getNearby(latcenter, lngcenter).subscribe(d => {
-      this.googleApiRestaurant = d.results;
+      if(d.results!=undefined){
+      this.googleApiRestaurant = d.results;}
+
+      console.log(d)
       this.googleApiRestaurant.map(result => {
         let googleRestau =
         {
           "lat": result.geometry.location.lat, "lng": result.geometry.location.lng, "title": result.name, "adresse": result.vicinity, "cp": "13500 Martigues", "pays": "France", "average": Number(result.rating), "id": result.place_id,
           "ratings": []
         };
-        /*
+        
         this.googleApiService.getPlaceId(googleRestau.id).subscribe(e => {
-          this.detailApiRestaurant = e.results;
-          console.log(e)
-        });*/
-      
+          if(e.result!=undefined){
+          this.detailApiRestaurant = e.result;}
+          console.log(e.result)
+        });
+
         let coordRestaurant = { lat: googleRestau.lat, lng: googleRestau.lng };
 
-        if (this.filteredRestaurant.includes(googleRestau)) {console.log("do nothing")}
-        else{
+        if (filteredRestaurant.includes(googleRestau)) { console.log("do nothing") }
+        else {
           if (+this.maximalvalue >= googleRestau.average && +this.minimalvalue <= googleRestau.average) {
-          if (bounds.contains(coordRestaurant)) {
-            this.filteredRestaurant.push(googleRestau);
-            this.hiddenRestaurant.push(googleRestau);
-          }}
+            if (bounds.contains(coordRestaurant)) {
+              filteredRestaurant.push(googleRestau);
+              this.hiddenRestaurant.push(googleRestau);
+            }
+          }
         };
       })
+      this.restaurantService.setRestaurants(filteredRestaurant);
     });
-    
+
 
   }
 

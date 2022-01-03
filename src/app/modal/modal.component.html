@@ -1,17 +1,34 @@
-<h4>Ajouter un restaurant</h4>
+<div [hidden]="submitted">
 
 
-<div>
 
-    <form novalidate>
-        <label for="title">Nom : </label>
-        <input name="title" type="text" class="form-control" ngModel required>
-        <label for="adress">Rue et libellé </label>
-        <input name="adress" type="text" class="form-control" ngModel required>
-        <label for="cp">Code postal </label>
-        <input name="cp" type="number" class="form-control" ngModel required>
-        <label for="pays">Pays</label>
-        <input name="pays" type="text" class="form-control" ngModel required>
-        <button color="accent" type="submit">Valider</button>
+    <form [formGroup]="addRestaurantForm" (ngSubmit)="onSubmit()" class='center-form-content'>
+        <h4>Ajouter un restaurant</h4>
+        <mat-form-field appearance="outline">
+            <mat-label>Nom</mat-label>
+            <input matInput type="text" formcontrolName='title'>
+            <mat-error *ngIf="hasError('title','required')">Le champ est requis</mat-error>
+            <mat-error *ngIf="hasError('title','title')">Veuillez entrer un nom valide</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Adresse</mat-label>
+            <input matInput type="text" formcontrolName='adress'>
+            <mat-error *ngIf="hasError('adress','required')">Le champ est requis</mat-error>
+            <mat-error *ngIf="hasError('adress','adress')">Veuillez entrer une adresse valide</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Code postal</mat-label>
+            <input matInput type="number" formcontrolName='cp'>
+            <mat-error *ngIf="hasError('cp','required')">Le champ est requis</mat-error>
+            <mat-error *ngIf="hasError('cp','cp')">Veuillez entrer un code postal valide</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Pays</mat-label>
+            <input matInput type="text" formcontrolName='pays'>
+            <mat-error *ngIf="hasError('pays','required')">Le champ est requis</mat-error>
+            <mat-error *ngIf="hasError('pays','pays')">Veuillez entrer un pays valide</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color='primary'>Valider</button>
     </form>
+
 </div>
