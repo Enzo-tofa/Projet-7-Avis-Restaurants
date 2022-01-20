@@ -44,12 +44,12 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.setCurrentLocation();
     this.getAverage();
   }
 
 
+  /** Permet l'ajout du restaurant a l'aide d'une modale */
   openDialog(lat: number, lng: number) {
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '500px',
@@ -62,11 +62,13 @@ export class AppComponent implements OnInit {
     });
   }
 
+  /** Permet de valider le formulaire de commentaire */
   onSubmit(e: NgForm, rating: Rating[]) {
     rating.push(e.value);
     this.getAverage();
   }
 
+  /** Permet le déplacement du point de vue de l'utilisateur sur la carte */
   scroll(el: HTMLElement) {
     el.scrollIntoView({ behavior: 'smooth' });
   }
@@ -113,40 +115,45 @@ export class AppComponent implements OnInit {
 
   /** Permet de vérifier que le marker est dans la limite de la carte google maps */
   checkMarkersInBounds(bounds: any) {
-
     const filteredRestaurant: Marker[] = [];
     this.hiddenRestaurant = [];
 
+    /** Permet de vérifier si les marker du data.json sont dans les limites de la carte */
     for (let m of this.markers) {
-      if(m){
-      let coordRestaurant = { lat: m.lat, lng: m.lng };
-      let present = filteredRestaurant.includes(m);
-      if (bounds.contains(coordRestaurant) && +this.maximalvalue >= m.average && +this.minimalvalue <= m.average && !present) {
-        filteredRestaurant.push(m);
-        this.hiddenRestaurant.push(m);
+      if (m) {
+        let coordRestaurant = { lat: m.lat, lng: m.lng };
+        let present = filteredRestaurant.includes(m);
+        if (bounds.contains(coordRestaurant) && +this.maximalvalue >= m.average && +this.minimalvalue <= m.average && !present) {
+          filteredRestaurant.push(m);
+          this.hiddenRestaurant.push(m);
+        }
       }
-    }}
+    }
     this.restaurantService.setRestaurants(filteredRestaurant);
 
-
+    /**  Permet de récupérer le point central de la carte*/
     let center = Object.values(bounds);
     let latlngbounds: any = Object.values(center)
     let latcenter = (latlngbounds[0].g + latlngbounds[0].h) / 2;
     let lngcenter = (latlngbounds[1].g + latlngbounds[1].h) / 2;
 
+    /** Permet une requete avec l'API google pour recupérer les 20 restaurants les plus proches du centre */
     this.googleApiService.getNearby(latcenter, lngcenter).subscribe(d => {
       if (d.results != undefined) {
         this.googleApiRestaurant = d.results;
       }
 
       this.googleApiRestaurant.map(result => {
+
+        /** On crée un marker avec le resultat de notre requete */
         let googleRestau: Marker =
         {
           "lat": result.geometry.location.lat, "lng": result.geometry.location.lng, "title": result.name, "adresse": result.vicinity, "cp": "13500 Martigues", "pays": "France", "average": Number(result.rating), "id": result.place_id,
           "ratings": []
         };
-        console.log(googleRestau)
 
+
+        /** On effectue une requete google search avec l'id de notre restaurant pour récuperer les commentaires */
         this.googleApiService.getPlaceId(googleRestau.id).subscribe(e => {
           if (e.result != undefined) {
             this.detailApiRestaurant = e.result;
@@ -154,7 +161,7 @@ export class AppComponent implements OnInit {
             this.detailApiRestaurant.reviews?.map(reviews => {
               let ratingsu: Rating =
               {
-                stars:reviews.rating, "comment": reviews.text
+                stars: reviews.rating, "comment": reviews.text
               }
               googleRestau.ratings.push(ratingsu);
             })
@@ -162,7 +169,7 @@ export class AppComponent implements OnInit {
         });
 
 
-
+        /** On recupère les coordonées du restaurant et on vérifie qu'il est présent dans la carte */
         let coordRestaurant = { lat: googleRestau.lat, lng: googleRestau.lng };
 
         if (filteredRestaurant.includes(googleRestau)) { console.log("do nothing") }
@@ -188,6 +195,7 @@ export class AppComponent implements OnInit {
   }
 
 
+  /** On met en place la position géolocaliser de l'utilisateur  */
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {

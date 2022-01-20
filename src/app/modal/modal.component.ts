@@ -24,52 +24,53 @@ export class ModalComponent {
     private formBuilder: FormBuilder
   ) { }
 
-  public hasError(controleName:string, errorName: string): boolean {
+  public hasError(controleName: string, errorName: string): boolean {
     return this.addRestaurantForm.controls[controleName].hasError(errorName);
   }
 
   public onSubmit() {
     const restaurantAdded: Marker = this.addRestaurantForm.value;
-    const newresto: Marker = { lat: this.data.lat, lng: this.data.lng, title:restaurantAdded.title, ratings:[], average:0, adresse: restaurantAdded.adresse, cp: restaurantAdded.cp,
-    pays: restaurantAdded.pays, id: "0" }
-    console.log(newresto);
+    const newresto: Marker = {
+      lat: this.data.lat, lng: this.data.lng, title: restaurantAdded.title, ratings: [], average: 0, adresse: restaurantAdded.adresse, cp: restaurantAdded.cp,
+      pays: restaurantAdded.pays, id: "0"
+    }
     this.restaurantService.addOneRestaurant(newresto);
-    console.log(this.data)
+    this.dialogRef.close();
   }
 
-private initForm(): FormGroup{
-  return this.formBuilder.group({
-    title: [
-      '',
-      [
-        Validators.maxLength(50),
-        Validators.required
+  private initForm(): FormGroup {
+    return this.formBuilder.group({
+      title: [
+        '',
+        [
+          Validators.maxLength(50),
+          Validators.required
+        ],
       ],
-    ],
-    adress: [
-      '',
-      [
-        Validators.minLength(5),
-        Validators.maxLength(50),
-        Validators.required
+      adress: [
+        '',
+        [
+          Validators.minLength(5),
+          Validators.maxLength(50),
+          Validators.required
+        ],
       ],
-    ],
-    cp: [
-      '',
-      [
-        Validators.maxLength(5),
-        Validators.required
+      cp: [
+        '',
+        [
+          Validators.maxLength(5),
+          Validators.required
+        ],
       ],
-    ],
-    pays: [
-      '',
-      [
-        Validators.maxLength(30),
-        Validators.required
-      ],
-    ]
-  });
-}
+      pays: [
+        '',
+        [
+          Validators.maxLength(30),
+          Validators.required
+        ],
+      ]
+    });
+  }
 
 
 

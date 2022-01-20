@@ -6,21 +6,23 @@ import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 
 
 @Injectable({
-    providedIn: 'root'
-  })
-  export class RestaurantService {
+  providedIn: 'root'
+})
+export class RestaurantService {
 
-    private restaurantsSubject = new BehaviorSubject<Marker[]>([]);
+  private restaurantsSubject = new BehaviorSubject<Marker[]>([]);
 
-    public setRestaurants(restaurants : Marker[]){
-      this.restaurantsSubject.next(restaurants);
-    }
-
-    public getRestaurants():Observable<Marker[]>{
-      return this.restaurantsSubject.asObservable();
-    }
-
-    public addOneRestaurant(restaurant:Marker){
-      this.restaurantsSubject.next([...this.restaurantsSubject.value,restaurant]);
-    }
+  public setRestaurants(restaurants: Marker[]) {
+    this.restaurantsSubject.next(restaurants);
   }
+
+  /** Permet de recupérer la liste des restaurants */
+  public getRestaurants(): Observable<Marker[]> {
+    return this.restaurantsSubject.asObservable();
+  }
+
+  /** Permet d'ajouter un restaurant */
+  public addOneRestaurant(restaurant: Marker) {
+    this.restaurantsSubject.next([...this.restaurantsSubject.value, restaurant]);
+  }
+}
