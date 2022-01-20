@@ -6,5 +6,5 @@ export interface RootObject {
     next_page_token: string;
     results?: Result[];
     status: string;
-    result?:Results[];
+    result?:Results;
 }

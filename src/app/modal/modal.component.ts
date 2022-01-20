@@ -13,7 +13,6 @@ export class ModalComponent {
 
   lat!: number;
   lng!: number;
-  submitted = false;
   public addRestaurantForm: FormGroup = this.initForm();
 
 
@@ -30,10 +29,10 @@ export class ModalComponent {
   }
 
   public onSubmit() {
-    this.submitted = true;
     const restaurantAdded: Marker = this.addRestaurantForm.value;
-    const newresto: Marker = { lng: this.data.lng, lat: this.data.lat, title:restaurantAdded.title, ratings:[], average:0, adresse: restaurantAdded.adresse, cp: restaurantAdded.cp,
-    pays: restaurantAdded.pays }
+    const newresto: Marker = { lat: this.data.lat, lng: this.data.lng, title:restaurantAdded.title, ratings:[], average:0, adresse: restaurantAdded.adresse, cp: restaurantAdded.cp,
+    pays: restaurantAdded.pays, id: "0" }
+    console.log(newresto);
     this.restaurantService.addOneRestaurant(newresto);
     console.log(this.data)
   }

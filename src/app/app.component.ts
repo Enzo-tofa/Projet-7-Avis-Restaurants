@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
   markers: Marker[] = (data as any).default;
   googleRestau!: Marker[];
   googleApiRestaurant!: Result[];
-  detailApiRestaurant!: Results[];
+  detailApiRestaurant!: Results;
 
 
   constructor(private googleApiService: GoogleApiService, public dialog: MatDialog, public restaurantService: RestaurantService) {
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
-    
+
     this.setCurrentLocation();
     this.getAverage();
   }
@@ -58,7 +58,6 @@ export class AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.markers.push(result);
-      console.log(result);
       this.lat = result;
     });
   }
@@ -119,13 +118,14 @@ export class AppComponent implements OnInit {
     this.hiddenRestaurant = [];
 
     for (let m of this.markers) {
+      if(m){
       let coordRestaurant = { lat: m.lat, lng: m.lng };
       let present = filteredRestaurant.includes(m);
       if (bounds.contains(coordRestaurant) && +this.maximalvalue >= m.average && +this.minimalvalue <= m.average && !present) {
         filteredRestaurant.push(m);
         this.hiddenRestaurant.push(m);
       }
-    }
+    }}
     this.restaurantService.setRestaurants(filteredRestaurant);
 
 
@@ -135,22 +135,33 @@ export class AppComponent implements OnInit {
     let lngcenter = (latlngbounds[1].g + latlngbounds[1].h) / 2;
 
     this.googleApiService.getNearby(latcenter, lngcenter).subscribe(d => {
-      if(d.results!=undefined){
-      this.googleApiRestaurant = d.results;}
+      if (d.results != undefined) {
+        this.googleApiRestaurant = d.results;
+      }
 
-      console.log(d)
       this.googleApiRestaurant.map(result => {
-        let googleRestau =
+        let googleRestau: Marker =
         {
           "lat": result.geometry.location.lat, "lng": result.geometry.location.lng, "title": result.name, "adresse": result.vicinity, "cp": "13500 Martigues", "pays": "France", "average": Number(result.rating), "id": result.place_id,
           "ratings": []
         };
-        
+        console.log(googleRestau)
+
         this.googleApiService.getPlaceId(googleRestau.id).subscribe(e => {
-          if(e.result!=undefined){
-          this.detailApiRestaurant = e.result;}
-          console.log(e.result)
+          if (e.result != undefined) {
+            this.detailApiRestaurant = e.result;
+            console.log(e.result)
+            this.detailApiRestaurant.reviews?.map(reviews => {
+              let ratingsu: Rating =
+              {
+                stars:reviews.rating, "comment": reviews.text
+              }
+              googleRestau.ratings.push(ratingsu);
+            })
+          }
         });
+
+
 
         let coordRestaurant = { lat: googleRestau.lat, lng: googleRestau.lng };
 
@@ -204,10 +215,4 @@ export class AppComponent implements OnInit {
 
 
 
-
-
-
-function results(results: any) {
-  throw new Error('Function not implemented.');
-}
 
