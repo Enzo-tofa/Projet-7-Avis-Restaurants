@@ -30,7 +30,7 @@ import { MatInputModule } from '@angular/material/input';
     BrowserModule,
     ReactiveFormsModule,
     MatDialogModule,
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyCz-BbR4i-iYhWPSfXirbmzy97vfYvwWpQ',libraries: ['places'] }, ),
+    AgmCoreModule.forRoot({ apiKey: '',libraries: ['places'] }, ),
     BrowserAnimationsModule,
     NgbModule,
     
