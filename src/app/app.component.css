@@ -49,7 +49,7 @@ ol {
 #main {
     text-align: center;
     padding-left: 0px;
-    height: 640px;
+    height: 600px;
     overflow: scroll;
     overflow-x: hidden;
 }
@@ -84,6 +84,7 @@ label {
 }
 
 #note {
+    text-align: center;
     background-color: #ceece6;
     border: 3px solid #ceece6;
     border-radius: 30px;

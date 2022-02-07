@@ -22,6 +22,7 @@
 
     <div id="blocAvis">
         <div id="note">
+            <h3>Filtre</h3>
             <mat-form-field appearance="fill" style="width: 50%;padding: 3px;border-radius: 30px;">
                 <mat-label>Note minimale</mat-label>
                 <mat-select [(value)]="minimalvalue">
@@ -47,6 +48,7 @@
         <br>
         <div id="listeresto">
             <ol id="main">
+                <h3>Liste des restaurants</h3>
                 <li *ngFor="let f of restaurantService.getRestaurants()|async" (click)="selection(f.title)"> {{f.title}} <br> {{f.adresse}} <br> {{f.cp}} <br>{{f.pays}} <br> {{f.average}} / 5 étoiles
                     <ol *ngIf="f.title===selectedRestaurant">
                         <img [src]="getSrcByRestaurant(f)">
