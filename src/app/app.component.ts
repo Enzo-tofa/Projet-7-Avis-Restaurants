@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
     this.getAverage();
   }
 
-  /** Permet le déplacement du point de vue de l'utilisateur sur la carte */
+  /** Permet le déplacement du point de vue de l'utilisateur sur la carte google maps */
   scroll(el: HTMLElement) {
     el.scrollIntoView({ behavior: 'smooth' });
   }
